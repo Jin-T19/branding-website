@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>テストサイト</title>
+  <meta name="color-scheme" content="light dark">
+  <style>
+    /* --- CSS Reset (minimal) --- */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    img{max-width:100%;display:block}
+    button,input,select,textarea{font:inherit}
+
+    /* --- Theme Tokens --- */
+    :root{
+      --bg: #f7f7fb;
+      --panel:#ffffff;
+      --text:#1b1b1f;
+      --muted:#667085;
+      --brand:#4f46e5;
+      --brand-2:#22c55e;
+      --border:#e6e6ef;
+      --ring: rgba(79,70,229,0.35);
+      --shadow: 0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.05);
+      --radius: 16px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b0c10;
+        --panel:#111218;
+        --text:#e7e7ee;
+        --muted:#9aa1b2;
+        --brand:#818cf8;
+        --brand-2:#34d399;
+        --border:#1f2230;
+        --ring: rgba(129,140,248,0.45);
+        --shadow: 0 10px 24px rgba(0,0,0,.45), 0 6px 10px rgba(0,0,0,.35);
+      }
+    }
+
+    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Noto Sans JP", sans-serif; background:var(--bg); color:var(--text); line-height:1.6}
+    a{color:var(--brand); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .container{width:min(1100px, 92vw); margin-inline:auto; padding:24px}
+    header{position:sticky;top:0;backdrop-filter:saturate(160%) blur(8px); background:color-mix(in srgb, var(--bg) 70%, transparent); border-bottom:1px solid var(--border); z-index:20}
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .nav .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .nav .brand .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:var(--shadow)}
+    .nav ul{display:flex; gap:14px; list-style:none; padding:0; margin:0}
+    .nav li a{display:inline-block; padding:10px 12px; border-radius:12px}
+    .nav li a:hover{background:color-mix(in srgb, var(--brand) 12%, transparent)}
+
+    .actions{display:flex; gap:10px}
+    .btn{border:none; padding:10px 14px; border-radius:12px; background:var(--panel); color:var(--text); border:1px solid var(--border); box-shadow:var(--shadow); cursor:pointer}
+    .btn.primary{background:var(--brand); color:white; border-color:transparent}
+    .btn.ghost{background:transparent}
+    .btn:focus-visible{outline:3px solid var(--ring); outline-offset:2px}
+
+    .hero{display:grid; grid-template-columns: 1.1fr .9fr; gap:32px; align-items:center; padding-block:48px}
+    .card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; padding:.2em .5em; border-radius:8px; border:1px solid var(--border); background:color-mix(in srgb, var(--panel) 60%, transparent)}
+
+    .grid{display:grid; gap:16px}
+    .grid.cols-3{grid-template-columns: repeat(3, minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns: repeat(2, minmax(0,1fr))}
+    @media (max-width: 880px){
+      .hero{grid-template-columns:1fr}
+      .grid.cols-3{grid-template-columns:1fr}
+      .grid.cols-2{grid-template-columns:1fr}
+    }
+
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:color-mix(in srgb, var(--brand) 12%, transparent); border:1px solid color-mix(in srgb, var(--brand) 35%, var(--border)); font-size:12px; font-weight:600}
+    .badge .dot{width:8px;height:8px;border-radius:999px;background:var(--brand-2)}
+
+    .section{padding-block:34px}
+    h1{font-size:clamp(24px, 3vw + 10px, 40px); line-height:1.2; margin:0 0 10px}
+    h2{font-size:clamp(18px, 1.4vw + 12px, 28px); margin:0 0 14px}
+    p{margin:0 0 10px}
+
+    .table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid var(--border)}
+    .table th,.table td{padding:12px 14px; text-align:left}
+    .table thead th{background:color-mix(in srgb, var(--panel) 70%, var(--brand) 8%); font-weight:700}
+    .table tbody tr+tr td{border-top:1px solid var(--border)}
+
+    .form-grid{display:grid; gap:12px; grid-template-columns:1fr 1fr}
+    .form-grid .full{grid-column:1 / -1}
+    label{font-size:14px; color:var(--muted)}
+    input,select,textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:var(--panel); color:var(--text)}
+    input:focus,select:focus,textarea:focus{outline:3px solid var(--ring); border-color:transparent}
+
+    .footer{padding:28px 0; border-top:1px solid var(--border); color:var(--muted); font-size:14px}
+
+    .toast{position:fixed; right:16px; bottom:16px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow); opacity:0; transform:translateY(10px); transition:opacity .2s ease, transform .2s ease}
+    .toast.show{opacity:1; transform:translateY(0)}
+
+    .toggle{display:inline-flex; align-items:center; gap:8px}
+    .toggle input{appearance:none; width:40px; height:24px; background:color-mix(in srgb, var(--brand) 20%, var(--panel)); border-radius:999px; position:relative; outline:none; border:1px solid var(--border); cursor:pointer}
+    .toggle input::after{content:""; width:18px; height:18px; border-radius:999px; background:white; position:absolute; top:50%; left:3px; transform:translateY(-50%); transition:left .2s ease}
+    .toggle input:checked{background:var(--brand)}
+    .toggle input:checked::after{left:19px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav" role="navigation" aria-label="トップナビ">
+      <div class="brand" aria-label="サイトロゴ">
+        <span class="logo" aria-hidden="true"></span>
+        <span>テストサイト</span>
+      </div>
+      <ul>
+        <li><a href="#components">コンポーネント</a></li>
+        <li><a href="#form">フォーム</a></li>
+        <li><a href="#table">テーブル</a></li>
+      </ul>
+      <div class="actions">
+        <label class="toggle" title="テーマ切替">
+          <input id="themeToggle" type="checkbox" aria-label="テーマ切替 (ライト/ダーク)">
+          <span>テーマ</span>
+        </label>
+        <button class="btn primary" id="showToastBtn">テスト通知</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="badge"><span class="dot"></span> Ready to test</span>
+        <h1>フロントエンド動作確認用の<span class="kbd">index.html</span></h1>
+        <p>このページは、配色・コンポーネント・フォーム・テーブル・小さなJS挙動をまとめて確認できる<strong>簡易テストサイト</strong>です。コピペして使ってください。</p>
+        <div style="height:12px"></div>
+        <div class="grid cols-2">
+          <button class="btn primary" onclick="document.querySelector('#form').scrollIntoView({behavior:'smooth'})">フォームを試す</button>
+          <button class="btn" onclick="document.querySelector('#components').scrollIntoView({behavior:'smooth'})">UIを見る</button>
+        </div>
+      </div>
+      <div class="card" aria-label="デモカード">
+        <h2 style="margin-top:0">カード見本</h2>
+        <p>カード、影、ボーダー、角丸などのスタイルを確認できます。レスポンシブに対応。</p>
+        <div style="height:10px"></div>
+        <div class="grid cols-3">
+          <div class="card">
+            <strong>速度</strong>
+            <p>軽量・依存なし・1ファイル完結。</p>
+          </div>
+          <div class="card">
+            <strong>アクセシビリティ</strong>
+            <p>コントラスト・フォーカスリング・ラベル設定。</p>
+          </div>
+          <div class="card">
+            <strong>テーマ</strong>
+            <p>ライト/ダーク + 切替ボタン。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="components" class="section">
+      <h2>コンポーネント見本</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <p style="margin:0 0 8px"><strong>ボタン</strong></p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn primary">Primary</button>
+            <button class="btn">Default</button>
+            <button class="btn ghost">Ghost</button>
+          </div>
+        </div>
+        <div class="card">
+          <p style="margin:0 0 8px"><strong>バッジ & ショートカット</strong></p>
+          <p>ショートカットは <span class="kbd">⌘</span> + <span class="kbd">K</span> のように。</p>
+          <p class="badge"><span class="dot"></span> Online</p>
+        </div>
+        <div class="card">
+          <p style="margin:0 0 8px"><strong>カード</strong></p>
+          <p>入れ子のカード。影と余白のバランスを確認。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="table" class="section">
+      <h2>テーブル見本</h2>
+      <div class="card">
+        <table class="table" role="table" aria-label="サンプルテーブル">
+          <thead>
+            <tr><th>名前</th><th>役割</th><th>状態</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Alpha</td><td>管理</td><td>有効</td></tr>
+            <tr><td>Bravo</td><td>編集</td><td>一時停止</td></tr>
+            <tr><td>Charlie</td><td>閲覧</td><td>有効</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="form" class="section">
+      <h2>フォーム見本</h2>
+      <form class="card" id="demoForm">
+        <div class="form-grid">
+          <div>
+            <label for="name">名前</label>
+            <input id="name" name="name" placeholder="山田 太郎" required />
+          </div>
+          <div>
+            <label for="email">メール</label>
+            <input id="email" name="email" type="email" placeholder="taro@example.com" required />
+          </div>
+          <div>
+            <label for="role">役割</label>
+            <select id="role" name="role">
+              <option>管理者</option>
+              <option>編集者</option>
+              <option>閲覧者</option>
+            </select>
+          </div>
+          <div>
+            <label for="date">日付</label>
+            <input id="date" type="date" name="date" />
+          </div>
+          <div class="full">
+            <label for="message">メッセージ</label>
+            <textarea id="message" name="message" rows="4" placeholder="ご要望など"></textarea>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:12px">
+          <button class="btn primary" type="submit">送信</button>
+          <button class="btn" type="reset">リセット</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <div>© <span id="year"></span> Test Site. Built with vanilla HTML/CSS/JS.</div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">通知：動作確認OK！</div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Toast
+    const toast = document.getElementById('toast');
+    const showToast = () => {
+      toast.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=>toast.classList.remove('show'), 1800);
+    };
+    document.getElementById('showToastBtn').addEventListener('click', showToast);
+
+    // Theme toggle (persist)
+    const toggle = document.getElementById('themeToggle');
+    const THEME_KEY = 'testsite-theme';
+    const applyTheme = (mode) => {
+      document.documentElement.dataset.theme = mode;
+      if(mode==='dark'){
+        document.documentElement.style.colorScheme = 'dark';
+      } else if(mode==='light'){
+        document.documentElement.style.colorScheme = 'light';
+      } else {
+        document.documentElement.style.colorScheme = '';
+      }
+    };
+    // Initialize from storage or prefers
+    const saved = localStorage.getItem(THEME_KEY);
+    if(saved){
+      toggle.checked = saved === 'dark';
+      applyTheme(saved);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      toggle.checked = prefersDark;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+    toggle.addEventListener('change', ()=>{
+      const mode = toggle.checked ? 'dark' : 'light';
+      localStorage.setItem(THEME_KEY, mode);
+      applyTheme(mode);
+      showToast();
+    });
+
+    // Demo form handler
+    document.getElementById('demoForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+      console.log('Submitted data:', data);
+      showToast();
+      alert('送信しました！\n' + JSON.stringify(data, null, 2));
+    });
+  </script>
+</body>
+</html>
