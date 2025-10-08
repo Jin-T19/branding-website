@@ -1,125 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>テストサイト</title>
-  <meta name="color-scheme" content="light dark">
+  <title>テストサイト2</title>
+  <meta name="color-scheme" content="light dark" />
   <style>
-    /* --- CSS Reset (minimal) --- */
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    img{max-width:100%;display:block}
-    button,input,select,textarea{font:inherit}
-
-    /* --- Theme Tokens --- */
+    /* ========= 見た目を一新（前作と大幅変更） ========= */
     :root{
-      --bg: #f7f7fb;
-      --panel:#ffffff;
-      --text:#1b1b1f;
-      --muted:#667085;
-      --brand:#4f46e5;
-      --brand-2:#22c55e;
-      --border:#e6e6ef;
-      --ring: rgba(79,70,229,0.35);
-      --shadow: 0 10px 20px rgba(0,0,0,.08), 0 6px 6px rgba(0,0,0,.05);
-      --radius: 16px;
+      --bg: #0f1226;            /* 濃い群青ベース */
+      --surface: #161a35;       /* 面の色 */
+      --text: #e9edf8;          /* 文字色 */
+      --muted:#9aa7c7;          /* 補助テキスト */
+      --brand:#7c5cff;          /* アクセント1 */
+      --brand-2:#00ffd1;        /* アクセント2 */
+      --danger:#ff5577;
+      --ring: rgba(124,92,255,.45);
+      --border: color-mix(in srgb, white 10%, transparent);
+      --radius: 18px;
+      --shadow: 0 18px 60px rgba(0,0,0,.35), 0 8px 18px rgba(0,0,0,.35);
     }
-    @media (prefers-color-scheme: dark){
+    @media (prefers-color-scheme: light){
       :root{
-        --bg:#0b0c10;
-        --panel:#111218;
-        --text:#e7e7ee;
-        --muted:#9aa1b2;
-        --brand:#818cf8;
-        --brand-2:#34d399;
-        --border:#1f2230;
-        --ring: rgba(129,140,248,0.45);
-        --shadow: 0 10px 24px rgba(0,0,0,.45), 0 6px 10px rgba(0,0,0,.35);
+        --bg:#f7f6ff;
+        --surface:#ffffff;
+        --text:#111324;
+        --muted:#616c87;
+        --border:#e6e6f3;
+        --ring: rgba(124,92,255,.35);
+        --shadow: 0 18px 50px rgba(0,0,0,.10), 0 10px 18px rgba(0,0,0,.06);
       }
     }
-
-    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Noto Sans JP", sans-serif; background:var(--bg); color:var(--text); line-height:1.6}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text); background:radial-gradient(1200px 600px at 10% -10%, rgba(124,92,255,.25), transparent 60%), radial-gradient(900px 700px at 110% 10%, rgba(0,255,209,.18), transparent 60%), var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Noto Sans JP", sans-serif;
+      line-height:1.65;
+      display:flex; flex-direction:column;
+    }
     a{color:var(--brand); text-decoration:none}
     a:hover{text-decoration:underline}
 
-    .container{width:min(1100px, 92vw); margin-inline:auto; padding:24px}
-    header{position:sticky;top:0;backdrop-filter:saturate(160%) blur(8px); background:color-mix(in srgb, var(--bg) 70%, transparent); border-bottom:1px solid var(--border); z-index:20}
+    /* ====== Header / Nav ====== */
+    header{position:sticky; top:0; z-index:30; backdrop-filter:saturate(160%) blur(10px); background:color-mix(in srgb, var(--bg) 65%, transparent); border-bottom:1px solid var(--border)}
+    .container{width:min(1100px,92vw); margin-inline:auto; padding:20px}
     .nav{display:flex; align-items:center; justify-content:space-between; gap:16px}
-    .nav .brand{display:flex; align-items:center; gap:10px; font-weight:700}
-    .nav .brand .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:var(--shadow)}
-    .nav ul{display:flex; gap:14px; list-style:none; padding:0; margin:0}
-    .nav li a{display:inline-block; padding:10px 12px; border-radius:12px}
-    .nav li a:hover{background:color-mix(in srgb, var(--brand) 12%, transparent)}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px}
+    .logo{width:30px;height:30px;border-radius:10px; background:conic-gradient(from 210deg, var(--brand), var(--brand-2)); box-shadow:0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent), 0 8px 22px rgba(0,0,0,.25)}
+    .nav ul{display:flex; gap:10px; padding:0; margin:0; list-style:none}
+    .nav a{padding:8px 12px; border-radius:12px}
+    .nav a:hover{background:color-mix(in srgb, var(--brand) 14%, transparent)}
 
-    .actions{display:flex; gap:10px}
-    .btn{border:none; padding:10px 14px; border-radius:12px; background:var(--panel); color:var(--text); border:1px solid var(--border); box-shadow:var(--shadow); cursor:pointer}
-    .btn.primary{background:var(--brand); color:white; border-color:transparent}
-    .btn.ghost{background:transparent}
+    .btn{border:1px solid var(--border); background:linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, white 8%), var(--surface)); color:var(--text); padding:10px 14px; border-radius:12px; box-shadow:var(--shadow); cursor:pointer}
+    .btn.primary{background:linear-gradient(180deg, color-mix(in srgb, var(--brand) 75%, white 5%), var(--brand)); border-color:transparent; color:white}
+    .btn.ghost{background:transparent; box-shadow:none}
     .btn:focus-visible{outline:3px solid var(--ring); outline-offset:2px}
 
-    .hero{display:grid; grid-template-columns: 1.1fr .9fr; gap:32px; align-items:center; padding-block:48px}
-    .card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
-    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; padding:.2em .5em; border-radius:8px; border:1px solid var(--border); background:color-mix(in srgb, var(--panel) 60%, transparent)}
+    /* ====== Hero ====== */
+    .hero{display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:center; padding-block:42px}
+    .pill{display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border:1px solid var(--border); border-radius:999px; background:color-mix(in srgb, var(--brand) 10%, transparent); font-size:12px; font-weight:700}
+    .pill .dot{width:8px;height:8px;border-radius:999px;background:var(--brand-2)}
+    h1{font-size:clamp(26px, 3vw + 14px, 44px); line-height:1.15; margin:10px 0}
+    .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
 
     .grid{display:grid; gap:16px}
-    .grid.cols-3{grid-template-columns: repeat(3, minmax(0,1fr))}
-    .grid.cols-2{grid-template-columns: repeat(2, minmax(0,1fr))}
-    @media (max-width: 880px){
-      .hero{grid-template-columns:1fr}
-      .grid.cols-3{grid-template-columns:1fr}
-      .grid.cols-2{grid-template-columns:1fr}
-    }
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr} .grid.cols-3,.grid.cols-2{grid-template-columns:1fr} }
 
-    .badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:color-mix(in srgb, var(--brand) 12%, transparent); border:1px solid color-mix(in srgb, var(--brand) 35%, var(--border)); font-size:12px; font-weight:600}
-    .badge .dot{width:8px;height:8px;border-radius:999px;background:var(--brand-2)}
+    /* ====== Tabs ====== */
+    .tabs{display:flex; gap:8px; flex-wrap:wrap}
+    .tab-btn{padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer}
+    .tab-btn[aria-selected="true"]{background:color-mix(in srgb, var(--brand) 20%, transparent); outline:2px solid color-mix(in srgb, var(--brand) 40%, transparent)}
+    .tab-panel{display:none}
+    .tab-panel[aria-hidden="false"]{display:block}
 
-    .section{padding-block:34px}
-    h1{font-size:clamp(24px, 3vw + 10px, 40px); line-height:1.2; margin:0 0 10px}
-    h2{font-size:clamp(18px, 1.4vw + 12px, 28px); margin:0 0 14px}
-    p{margin:0 0 10px}
+    /* ====== Accordion ====== */
+    details{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px}
+    details+details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700}
 
+    /* ====== Modal ====== */
+    .modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; z-index:50}
+    .modal{width:min(560px, 92vw); background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:var(--shadow)}
+    .modal-backdrop.show{display:flex}
+
+    /* ====== Table & Form ====== */
     .table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid var(--border)}
     .table th,.table td{padding:12px 14px; text-align:left}
-    .table thead th{background:color-mix(in srgb, var(--panel) 70%, var(--brand) 8%); font-weight:700}
+    .table thead th{background:color-mix(in srgb, var(--brand) 14%, var(--surface))}
     .table tbody tr+tr td{border-top:1px solid var(--border)}
 
     .form-grid{display:grid; gap:12px; grid-template-columns:1fr 1fr}
     .form-grid .full{grid-column:1 / -1}
     label{font-size:14px; color:var(--muted)}
-    input,select,textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:var(--panel); color:var(--text)}
+    input,select,textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:color-mix(in srgb, var(--surface) 85%, white 4%); color:var(--text)}
     input:focus,select:focus,textarea:focus{outline:3px solid var(--ring); border-color:transparent}
 
-    .footer{padding:28px 0; border-top:1px solid var(--border); color:var(--muted); font-size:14px}
+    /* ====== Footer ====== */
+    footer{margin-top:auto; border-top:1px solid var(--border); color:var(--muted)}
 
-    .toast{position:fixed; right:16px; bottom:16px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow); opacity:0; transform:translateY(10px); transition:opacity .2s ease, transform .2s ease}
+    /* ====== Toast ====== */
+    .toast{position:fixed; right:16px; bottom:16px; background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow); opacity:0; transform:translateY(10px); transition:opacity .2s ease, transform .2s ease}
     .toast.show{opacity:1; transform:translateY(0)}
-
-    .toggle{display:inline-flex; align-items:center; gap:8px}
-    .toggle input{appearance:none; width:40px; height:24px; background:color-mix(in srgb, var(--brand) 20%, var(--panel)); border-radius:999px; position:relative; outline:none; border:1px solid var(--border); cursor:pointer}
-    .toggle input::after{content:""; width:18px; height:18px; border-radius:999px; background:white; position:absolute; top:50%; left:3px; transform:translateY(-50%); transition:left .2s ease}
-    .toggle input:checked{background:var(--brand)}
-    .toggle input:checked::after{left:19px}
   </style>
 </head>
 <body>
   <header>
-    <div class="container nav" role="navigation" aria-label="トップナビ">
-      <div class="brand" aria-label="サイトロゴ">
-        <span class="logo" aria-hidden="true"></span>
-        <span>テストサイト</span>
-      </div>
+    <div class="container nav" role="navigation" aria-label="ナビゲーション">
+      <div class="brand"><span class="logo" aria-hidden="true"></span><span>テストサイト2</span></div>
       <ul>
-        <li><a href="#components">コンポーネント</a></li>
+        <li><a href="#components">UI</a></li>
+        <li><a href="#tabs">タブ</a></li>
         <li><a href="#form">フォーム</a></li>
-        <li><a href="#table">テーブル</a></li>
+        <li><a href="about.html">2ページ目へ ▶</a></li><!-- ★ 2ページ目（別HTML）想定リンク -->
       </ul>
-      <div class="actions">
-        <label class="toggle" title="テーマ切替">
-          <input id="themeToggle" type="checkbox" aria-label="テーマ切替 (ライト/ダーク)">
-          <span>テーマ</span>
-        </label>
-        <button class="btn primary" id="showToastBtn">テスト通知</button>
+      <div style="display:flex; gap:10px">
+        <button class="btn" id="openModal">モーダル</button>
+        <button class="btn primary" id="toastBtn">通知</button>
       </div>
     </div>
   </header>
@@ -127,78 +126,86 @@
   <main class="container">
     <section class="hero">
       <div>
-        <span class="badge"><span class="dot"></span> Ready to test</span>
-        <h1>フロントエンド動作確認用の<span class="kbd">index.html</span></h1>
-        <p>このページは、配色・コンポーネント・フォーム・テーブル・小さなJS挙動をまとめて確認できる<strong>簡易テストサイト</strong>です。コピペして使ってください。</p>
-        <div style="height:12px"></div>
-        <div class="grid cols-2">
-          <button class="btn primary" onclick="document.querySelector('#form').scrollIntoView({behavior:'smooth'})">フォームを試す</button>
-          <button class="btn" onclick="document.querySelector('#components').scrollIntoView({behavior:'smooth'})">UIを見る</button>
+        <span class="pill"><span class="dot"></span> New look</span>
+        <h1>“濃い群青 × ネオン” テーマで <br/> 前作からがっつり刷新</h1>
+        <p>配色、ヒーロー、タブ、アコーディオン、モーダル、トーストなどを一新。<br/>リンクの <strong>about.html</strong> は 2 ページ目の想定（別HTML）。</p>
+        <div class="grid cols-2" style="margin-top:12px">
+          <a class="btn primary" href="#components">UIを見る</a>
+          <a class="btn" href="#form">フォームへ</a>
         </div>
       </div>
-      <div class="card" aria-label="デモカード">
-        <h2 style="margin-top:0">カード見本</h2>
-        <p>カード、影、ボーダー、角丸などのスタイルを確認できます。レスポンシブに対応。</p>
-        <div style="height:10px"></div>
-        <div class="grid cols-3">
-          <div class="card">
-            <strong>速度</strong>
-            <p>軽量・依存なし・1ファイル完結。</p>
-          </div>
-          <div class="card">
-            <strong>アクセシビリティ</strong>
-            <p>コントラスト・フォーカスリング・ラベル設定。</p>
-          </div>
-          <div class="card">
-            <strong>テーマ</strong>
-            <p>ライト/ダーク + 切替ボタン。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="components" class="section">
-      <h2>コンポーネント見本</h2>
-      <div class="grid cols-3">
-        <div class="card">
-          <p style="margin:0 0 8px"><strong>ボタン</strong></p>
-          <div style="display:flex; gap:10px; flex-wrap:wrap">
-            <button class="btn primary">Primary</button>
-            <button class="btn">Default</button>
-            <button class="btn ghost">Ghost</button>
-          </div>
-        </div>
-        <div class="card">
-          <p style="margin:0 0 8px"><strong>バッジ & ショートカット</strong></p>
-          <p>ショートカットは <span class="kbd">⌘</span> + <span class="kbd">K</span> のように。</p>
-          <p class="badge"><span class="dot"></span> Online</p>
-        </div>
-        <div class="card">
-          <p style="margin:0 0 8px"><strong>カード</strong></p>
-          <p>入れ子のカード。影と余白のバランスを確認。</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="table" class="section">
-      <h2>テーブル見本</h2>
       <div class="card">
-        <table class="table" role="table" aria-label="サンプルテーブル">
-          <thead>
-            <tr><th>名前</th><th>役割</th><th>状態</th></tr>
-          </thead>
+        <h2 style="margin-top:0">今回の差分</h2>
+        <ul>
+          <li>ダーク寄りネオン配色 & ラジアルグラデ背景</li>
+          <li>タブ/アコーディオン/モーダルのJS挙動追加</li>
+          <li>見出し・余白・影・角丸を再設計</li>
+          <li>2ページ目（about.html）前提のナビ</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="components" class="grid cols-3">
+      <div class="card">
+        <p style="margin:0 0 8px"><strong>ボタン</strong></p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn primary">Primary</button>
+          <button class="btn">Default</button>
+          <button class="btn ghost">Ghost</button>
+        </div>
+      </div>
+      <div class="card">
+        <p style="margin:0 0 8px"><strong>アコーディオン</strong></p>
+        <details>
+          <summary>これは何？</summary>
+          <p>UI動作確認用のテストページ第2弾です。</p>
+        </details>
+        <details>
+          <summary>何が違う？</summary>
+          <p>配色・レイアウト・JSコンポーネントを大幅刷新。</p>
+        </details>
+      </div>
+      <div class="card">
+        <p style="margin:0 0 8px"><strong>テーブル</strong></p>
+        <table class="table" role="table" aria-label="サンプル">
+          <thead><tr><th>項目</th><th>値</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td>Alpha</td><td>管理</td><td>有効</td></tr>
-            <tr><td>Bravo</td><td>編集</td><td>一時停止</td></tr>
-            <tr><td>Charlie</td><td>閲覧</td><td>有効</td></tr>
+            <tr><td>Alpha</td><td>123</td><td>Active</td></tr>
+            <tr><td>Beta</td><td>456</td><td>Paused</td></tr>
+            <tr><td>Gamma</td><td>789</td><td>Active</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section id="form" class="section">
-      <h2>フォーム見本</h2>
-      <form class="card" id="demoForm">
+    <section id="tabs" class="card" style="margin-top:20px">
+      <h2 style="margin-top:0">タブ切替</h2>
+      <div class="tabs" role="tablist" aria-label="デモタブ">
+        <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">概要</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">使い方</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3">Tips</button>
+      </div>
+      <div id="panel-1" class="tab-panel" role="tabpanel" aria-labelledby="tab-1" aria-hidden="false">
+        <p>このタブはキーボード操作（←→）と Enter/Space で切り替え可能。</p>
+      </div>
+      <div id="panel-2" class="tab-panel" role="tabpanel" aria-labelledby="tab-2" aria-hidden="true">
+        <ol>
+          <li>この HTML を <span style="font-family:ui-monospace">index.html</span> として保存</li>
+          <li>2ページ目を <span style="font-family:ui-monospace">about.html</span> で作成</li>
+          <li>GitHub Pages などで公開</li>
+        </ol>
+      </div>
+      <div id="panel-3" class="tab-panel" role="tabpanel" aria-labelledby="tab-3" aria-hidden="true">
+        <ul>
+          <li>共通スタイルにしたい場合は CSS を外出し（例: <span style="font-family:ui-monospace">/assets/site.css</span>）</li>
+          <li>404.html を置くと GitHub Pages のカスタム404が効く</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="form" class="card" style="margin-top:20px">
+      <h2 style="margin-top:0">フォーム</h2>
+      <form id="demoForm" novalidate>
         <div class="form-grid">
           <div>
             <label for="name">名前</label>
@@ -221,8 +228,8 @@
             <input id="date" type="date" name="date" />
           </div>
           <div class="full">
-            <label for="message">メッセージ</label>
-            <textarea id="message" name="message" rows="4" placeholder="ご要望など"></textarea>
+            <label for="msg">メッセージ</label>
+            <textarea id="msg" name="msg" rows="4" placeholder="ご要望など"></textarea>
           </div>
         </div>
         <div style="display:flex; gap:10px; margin-top:12px">
@@ -233,62 +240,92 @@
     </section>
   </main>
 
-  <footer class="container footer">
-    <div>© <span id="year"></span> Test Site. Built with vanilla HTML/CSS/JS.</div>
+  <footer class="container" style="padding:28px 20px">
+    <div>© <span id="year"></span> Test Site 2 — Built fresh.</div>
   </footer>
 
-  <div class="toast" id="toast" role="status" aria-live="polite">通知：動作確認OK！</div>
+  <!-- Modal -->
+  <div class="modal-backdrop" id="backdrop" aria-hidden="true" aria-label="モーダル背景">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title" style="margin-top:0">モーダルの見本</h3>
+      <p>Esc で閉じられるよ。フォーカストラップあり。</p>
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px">
+        <button class="btn" id="closeModal">閉じる</button>
+        <button class="btn primary" id="okModal">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">通知：更新しました！</div>
 
   <script>
-    // Year
+    // 年表示
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // Toast
     const toast = document.getElementById('toast');
-    const showToast = () => {
-      toast.classList.add('show');
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(()=>toast.classList.remove('show'), 1800);
-    };
-    document.getElementById('showToastBtn').addEventListener('click', showToast);
+    const pop = () => { toast.classList.add('show'); clearTimeout(window.__t); window.__t = setTimeout(()=>toast.classList.remove('show'), 1800); };
+    document.getElementById('toastBtn').addEventListener('click', pop);
 
-    // Theme toggle (persist)
-    const toggle = document.getElementById('themeToggle');
-    const THEME_KEY = 'testsite-theme';
-    const applyTheme = (mode) => {
-      document.documentElement.dataset.theme = mode;
-      if(mode==='dark'){
-        document.documentElement.style.colorScheme = 'dark';
-      } else if(mode==='light'){
-        document.documentElement.style.colorScheme = 'light';
-      } else {
-        document.documentElement.style.colorScheme = '';
-      }
+    // Modal with focus trap + ESC close
+    const openBtn = document.getElementById('openModal');
+    const closeBtn = document.getElementById('closeModal');
+    const okBtn = document.getElementById('okModal');
+    const backdrop = document.getElementById('backdrop');
+    const modal = backdrop.querySelector('.modal');
+    const focusables = () => modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+    const openModal = () => {
+      backdrop.classList.add('show');
+      backdrop.style.display = 'flex';
+      backdrop.setAttribute('aria-hidden', 'false');
+      const first = focusables()[0]; first && first.focus();
+      document.addEventListener('keydown', trap);
     };
-    // Initialize from storage or prefers
-    const saved = localStorage.getItem(THEME_KEY);
-    if(saved){
-      toggle.checked = saved === 'dark';
-      applyTheme(saved);
-    } else {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      toggle.checked = prefersDark;
-      applyTheme(prefersDark ? 'dark' : 'light');
-    }
-    toggle.addEventListener('change', ()=>{
-      const mode = toggle.checked ? 'dark' : 'light';
-      localStorage.setItem(THEME_KEY, mode);
-      applyTheme(mode);
-      showToast();
+    const closeModal = () => {
+      backdrop.classList.remove('show');
+      backdrop.style.display = 'none';
+      backdrop.setAttribute('aria-hidden', 'true');
+      openBtn.focus();
+      document.removeEventListener('keydown', trap);
+    };
+    const trap = (e) => {
+      if(e.key === 'Escape') return closeModal();
+      if(e.key !== 'Tab') return;
+      const nodes = Array.from(focusables());
+      const first = nodes[0], last = nodes[nodes.length - 1];
+      if(e.shiftKey && document.activeElement === first){ last.focus(); e.preventDefault(); }
+      else if(!e.shiftKey && document.activeElement === last){ first.focus(); e.preventDefault(); }
+    };
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    okBtn.addEventListener('click', ()=>{ pop(); closeModal(); });
+    backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
+
+    // Tabs (keyboard accessible)
+    const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+    const panels = Array.from(document.querySelectorAll('.tab-panel'));
+    const setTab = (i)=>{
+      tabs.forEach((t,idx)=>{ t.setAttribute('aria-selected', idx===i? 'true':'false'); t.tabIndex = idx===i? 0 : -1; });
+      panels.forEach((p,idx)=> p.setAttribute('aria-hidden', idx===i? 'false':'true'));
+      tabs[i].focus();
+    };
+    tabs.forEach((t, i)=>{
+      t.addEventListener('click', ()=> setTab(i));
+      t.addEventListener('keydown', (e)=>{
+        if(e.key==='ArrowRight') setTab((i+1)%tabs.length);
+        if(e.key==='ArrowLeft') setTab((i-1+tabs.length)%tabs.length);
+        if(e.key==='Home') setTab(0);
+        if(e.key==='End') setTab(tabs.length-1);
+      });
     });
 
-    // Demo form handler
+    // Form submit (mock)
     document.getElementById('demoForm').addEventListener('submit', (e)=>{
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.currentTarget).entries());
-      console.log('Submitted data:', data);
-      showToast();
-      alert('送信しました！\n' + JSON.stringify(data, null, 2));
+      alert('送信！\n'+JSON.stringify(data, null, 2));
+      pop();
     });
   </script>
 </body>
